@@ -1,0 +1,36 @@
+
+                plugins {
+                    id 'com.github.johnrengelman.shadow' version '5.2.0'
+                    id "java"
+                }
+        
+                dependencies { 
+                    compile fileTree('lib') { include '*.jar' }
+                }
+        
+                sourceSets {
+                    main {
+                        java {
+                            srcDirs = ['src']
+                            buildDir = "/Users/mlsdmitry/Documents/NativeMod/innercore-mod-toolchain/TestMod/toolchain/build/gradle/sample/classes/${project.name}"
+                        }
+                        resources {
+                            srcDirs = []
+                        }
+                        compileClasspath += files('/Users/mlsdmitry/Documents/NativeMod/innercore-mod-toolchain/TestMod/toolchain/classpath/horizon-classes.jar', '/Users/mlsdmitry/Documents/NativeMod/innercore-mod-toolchain/TestMod/toolchain/classpath/android-support-multidex.jar', '/Users/mlsdmitry/Documents/NativeMod/innercore-mod-toolchain/TestMod/toolchain/classpath/android.jar', '/Users/mlsdmitry/Documents/NativeMod/innercore-mod-toolchain/TestMod/toolchain/classpath/android-support-v4.jar', '/Users/mlsdmitry/Documents/NativeMod/innercore-mod-toolchain/TestMod/toolchain/classpath/android-support-v7-recyclerview.jar')
+                    }
+                }
+        
+                tasks.register("dex") {
+                    javaexec { 
+                        main = "-jar";
+                        args = [
+                            "/Users/mlsdmitry/Documents/NativeMod/innercore-mod-toolchain/TestMod/toolchain/bin/dx.jar",
+                            "--dex",
+                            "--multi-dex",
+                            "--output=\"/Users/mlsdmitry/Documents/NativeMod/innercore-mod-toolchain/TestMod/output/java/sample/.\"",
+                            "/Users/mlsdmitry/Documents/NativeMod/innercore-mod-toolchain/TestMod/toolchain/build/gradle/sample/classes/${project.name}/libs/${project.name}-all.jar"
+                        ]
+                    } 
+                }
+            
