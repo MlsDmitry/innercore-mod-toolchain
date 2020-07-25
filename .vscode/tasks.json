@@ -1,0 +1,90 @@
+{
+    // See https://go.microsoft.com/fwlink/?LinkId=733558
+    // for the documentation about the tasks.json format
+    "version": "2.0.0",
+    "type": "shell",
+    "windows": {
+        "options": {
+            "cwd": ".\\toolchain\\python"
+        },
+        "command": "python",
+    },
+    "osx": {
+        "options": {
+            "cwd": "./toolchain/python",
+        },
+        "command": "python3",
+    },
+    "linux": {
+        "options": {
+            "cwd": "./toolchain/python"
+        },
+        "command": "python3",
+    },
+    "group": {
+        "kind": "build",
+        "isDefault": true
+    },
+    "tasks": [
+        {
+            "label": "Build and Push Everything",
+            "args": [
+                "task.py",
+                "clearOutput",
+                "buildScripts",
+                "buildResources",
+                "compileNativeDebug",
+                "compileJavaDebug",
+                "buildAdditional",
+                "buildInfo",
+                "pushEverything",
+                "launchHorizon"
+            ],
+            "problemMatcher": [],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            }
+        },
+        {
+            "label": "Build Scripts and Resources",
+            "args": [
+                "task.py buildScripts buildResources buildAdditional buildInfo pushEverything launchHorizon"
+            ]
+        },
+        {
+            "label": "Cleanup",
+            "args": [
+                "task.py cleanup"
+            ]
+        },
+        {
+            "label": "Build and Push Java",
+            "args": [
+                "task.py compileJavaDebug buildInfo pushEverything launchHorizon"
+            ]
+        },
+        {
+            "label": "Build and Push Native",
+            "args": [
+                "task.py compileNativeDebug buildInfo pushEverything launchHorizon"
+            ]
+        },
+        {
+            "label": "Connect to ADB",
+            "command": "task.py connectToADB",
+            "args": [
+                "${input:ip}:5555"
+            ],
+            "problemMatcher": []
+        }
+    ],
+    "inputs": [
+        {
+            "id": "ip",
+            "description": "IP:",
+            "default": "192.168.43.1",
+            "type": "promptString"
+        }
+    ]
+}
